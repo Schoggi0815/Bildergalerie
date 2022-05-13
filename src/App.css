@@ -40,6 +40,7 @@ li {
     transform: translate(-50%, -50%);
     background-color: #fff;
     width: 50%;
+    max-width: 600px;
     height: 50%;
     z-index: 1;
     border-radius: 5%;

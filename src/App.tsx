@@ -54,7 +54,7 @@ function App() {
       <div className={'popup-background' + (addImage ? '' : '-invisible')}>
         <Header onAdd={() => setAddImage(true)}/>
         <div className="App">
-          <ImageList variant="masonry">
+          <ImageList variant="masonry" cols={3}>
             {images.map(image => (
               <ImageListItem>
                 <img src={image.url} alt={image.name}/>

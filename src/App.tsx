@@ -6,6 +6,7 @@ import { IconButton, ImageList, ImageListItem, ImageListItemBar, SvgIcon } from 
 import DeleteIcon from '@mui/icons-material/Delete';
 import Header from './Header';
 import AddImagePopup from './AddImagePopup';
+import useWindowDimensions from './useWindowDimensions';
 
 interface imageSource {
   url: string;
@@ -15,6 +16,8 @@ interface imageSource {
 function App() {
   const [images, setImages] = useState<imageSource[]>([]);
   const [addImage, setAddImage] = useState(false);
+  const { height, width } = useWindowDimensions();
+  const columns = width > 1000 ? 3 : width > 600 ? 2 : 1;
 
   useEffect(() => {
     GetImages();
@@ -54,7 +57,7 @@ function App() {
       <div className={'popup-background' + (addImage ? '' : '-invisible')}>
         <Header onAdd={() => setAddImage(true)}/>
         <div className="App">
-          <ImageList variant="masonry" cols={3}>
+          <ImageList variant="masonry" cols={columns}>
             {images.map(image => (
               <ImageListItem>
                 <img src={image.url} alt={image.name}/>

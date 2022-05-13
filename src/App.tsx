@@ -1,45 +1,81 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import './App.css';
+import { useEffect, useMemo, useState } from 'react';
+import { getStorage, listAll, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { storage } from './main';
+import { IconButton, ImageList, ImageListItem, ImageListItemBar, SvgIcon } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Header from './Header';
+import AddImagePopup from './AddImagePopup';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
+interface imageSource {
+  url: string;
+  name: string;
 }
 
-export default App
+function App() {
+  const [images, setImages] = useState<imageSource[]>([]);
+  const [addImage, setAddImage] = useState(false);
+
+  useEffect(() => {
+    GetImages();
+  }, []);
+
+  //Get all images from firebase
+  const GetImages = () => {
+    const storageRef = ref(storage, 'images');
+    listAll(storageRef).then(result => {
+      setImages([]);
+      result.items.forEach(item => {
+        getDownloadURL(ref(storage, item.fullPath)).then(url => {
+          setImages(images => [...images, { url, name: item.name }]);
+        });
+      });
+    });
+  };
+
+  const onClosePopup = () => {
+    setAddImage(false);
+    GetImages();
+  }
+
+  const onDeleteImage = (image: imageSource) => {
+    const storage = getStorage();
+    const desertRef = ref(storage, 'images/' + image.name);
+    deleteObject(desertRef).then(() => {
+      GetImages();
+    });
+  }
+
+  return (
+    <div>
+      {addImage && (
+        <AddImagePopup close={onClosePopup} cancel={() => setAddImage(false)}/>
+      )}
+      <div className={'popup-background' + (addImage ? '' : '-invisible')}>
+        <Header onAdd={() => setAddImage(true)}/>
+        <div className="App">
+          <ImageList variant="masonry">
+            {images.map(image => (
+              <ImageListItem>
+                <img src={image.url} alt={image.name}/>
+                <ImageListItemBar
+                  title={image.name}
+                  actionIcon={
+                    <IconButton
+                      sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                      onClick={() => onDeleteImage(image)}
+                    >
+                      <DeleteIcon/>
+                    </IconButton>
+                  }
+                />
+              </ImageListItem>
+            ))}
+          </ImageList>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;

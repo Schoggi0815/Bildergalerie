@@ -24,16 +24,16 @@ function App() {
   }, []);
 
   //Get all images from firebase
-  const GetImages = () => {
+  const GetImages = async () => {
     const storageRef = ref(storage, 'images');
-    listAll(storageRef).then(result => {
-      setImages([]);
-      result.items.forEach(item => {
-        getDownloadURL(ref(storage, item.fullPath)).then(url => {
-          setImages(images => [...images, { url, name: item.name }]);
-        });
-      });
-    });
+    const result = await listAll(storageRef);
+    const newImages: imageSource[] = [];
+    for (const item of result.items) {
+      const url = await getDownloadURL(ref(storage, item.fullPath));
+      newImages.push({url, name: item.name})
+    }
+
+    setImages(newImages.sort((a, b) => a.name.localeCompare(b.name)))
   };
 
   const onClosePopup = () => {

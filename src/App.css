@@ -86,3 +86,44 @@ li {
     display: flex;
     justify-content: space-between;
 }
+
+.carousel-wrapper {
+    z-index: 1;
+    display: block;
+    position: fixed;
+    width: 100%;
+}
+
+.image-paper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.image-paper > img {
+    max-width: 100%;
+    max-height: 80%;
+}
+
+.image-paper-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.image-paper-header > h2 {
+    text-align: center;
+}
+
+.image-paper > div {
+    margin-left: 120px;
+}
+
+.image-paper-cancel.image-paper-cancel {
+    height: 40px;
+    margin-right: 120px;
+}

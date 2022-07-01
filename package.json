@@ -15,10 +15,14 @@
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.6.2",
     "@mui/material": "^5.6.4",
+    "@react-three/drei": "^9.13.2",
+    "@react-three/fiber": "^8.0.26",
+    "@types/three": "^0.141.0",
     "firebase": "^9.7.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-material-ui-carousel": "^3.4.2"
+    "react-material-ui-carousel": "^3.4.2",
+    "three": "^0.141.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",

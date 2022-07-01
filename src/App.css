@@ -11,6 +11,9 @@ body {
 .header {
     background-color: #BBC5D0;
     padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 li {
@@ -126,4 +129,10 @@ li {
 .image-paper-cancel.image-paper-cancel {
     height: 40px;
     margin-right: 120px;
+}
+
+.canvas-wrapper {
+    width: 60px;
+    height: 60px;
+    margin: -10px;
 }
